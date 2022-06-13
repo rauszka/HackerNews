@@ -1,7 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
 using HackerNewsClient.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace HackerNewsClient.Controllers
 {
@@ -27,6 +32,45 @@ namespace HackerNewsClient.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+            return View();
+        }
+
+        public async Task<ActionResult> TopNews(int ID = 1)
+        {
+            string apiUrl = $"https://api.hnpwa.com/v0/news/{ID}.json";
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    var table = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Data.DataTable>(data);
+
+                    List<NewsModel> newsList = new();
+
+                    foreach (DataRow tr in table.Rows)
+                    {
+                        string title = tr["title"].ToString();
+                        string author = tr["user"].ToString();
+                        string timeAgo = tr["time_ago"].ToString();
+                        string url = tr["url"].ToString();
+
+                        NewsModel oneNews = new NewsModel(title, author, timeAgo, url);
+                        newsList.Add(oneNews);
+                    }
+
+                    ViewData["news"] = newsList;
+
+                }
+
+            }
             return View();
         }
 
