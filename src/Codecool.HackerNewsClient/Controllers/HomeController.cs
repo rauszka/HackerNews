@@ -66,7 +66,7 @@ namespace HackerNewsClient.Controllers
 
             var table = RetrieveData(apiUrl);
 
-            List<NewsModel> newsList = new();
+            List<APIModel> newsList = new();
 
             foreach (DataRow tr in table.Result.Rows)
             {
@@ -75,21 +75,21 @@ namespace HackerNewsClient.Controllers
                 string timeAgo = tr["time_ago"].ToString();
                 string url = tr["url"].ToString();
 
-                NewsModel oneNews = new NewsModel(ID, title, author, timeAgo, url);
-                newsList.Add(oneNews);
+                APIModel oneApi = new APIModel(ID, title, author, timeAgo, url);
+                newsList.Add(oneApi);
             }
 
             ViewData["news"] = newsList;
             return View();
         }
 
-        public ActionResult NewestNews(int ID = 1)
+        public ActionResult Newest(int ID = 1)
         {
             string apiUrl = $"https://api.hnpwa.com/v0/newest/{ID}.json";
 
             var table = RetrieveData(apiUrl);
 
-            List<NewsModel> newsList = new();
+            List<APIModel> newsList = new();
 
             foreach (DataRow tr in table.Result.Rows)
             {
@@ -98,8 +98,32 @@ namespace HackerNewsClient.Controllers
                 string timeAgo = tr["time_ago"].ToString();
                 string url = tr["url"].ToString();
 
-                NewsModel oneNews = new NewsModel(ID, title, author, timeAgo, url);
-                newsList.Add(oneNews);
+                APIModel oneApi = new APIModel(ID, title, author, timeAgo, url);
+                newsList.Add(oneApi);
+            }
+
+            ViewData["news"] = newsList;
+
+            return View();
+        }
+
+        public ActionResult Job(int ID = 1)
+        {
+            string apiUrl = $"https://api.hnpwa.com/v0/jobs/{ID}.json";
+
+            var table = RetrieveData(apiUrl);
+
+            List<APIModel> newsList = new();
+
+            foreach (DataRow tr in table.Result.Rows)
+            {
+                string title = tr["title"].ToString();
+                string author = tr["user"].ToString();
+                string timeAgo = tr["time_ago"].ToString();
+                string url = tr["url"].ToString();
+
+                APIModel oneApi = new APIModel(ID, title, author, timeAgo, url);
+                newsList.Add(oneApi);
             }
 
             ViewData["news"] = newsList;

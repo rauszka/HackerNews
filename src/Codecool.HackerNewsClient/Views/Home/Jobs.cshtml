@@ -1,16 +1,30 @@
-﻿@{
-    ViewData["Title"] = "Movie List";
+﻿@model APIModel
+@{
+    ViewData["Title"] = "Newest news";
+    List<APIModel> news = (List<APIModel>)ViewData["news"];
 }
 
-
 <div class="jumbotron">
-    Welcome
-</div>
-<div class="row">
-    <div class="col-md-4">
+    @{
+        string page = news.Select(oneNews => oneNews.Page.ToString()).First();
+        int next = int.Parse(page) == 1 ? int.Parse(page) : int.Parse(page) + 1;
+        int prev = int.Parse(page) == 1 ? 1 : int.Parse(page) - 1;
+    }
+
+    <div>
+        <p><a href="/home/job/@next">Next</a></p>
+        <p><a href="/home/job/@prev">Previous</a></p>
     </div>
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-4">
+
+    <div class="row">
+        @foreach (var oneNews in news)
+        {
+            <div class="col-md-4">
+                <a href="@oneNews.Url" target="_blank">
+                    <h2>@oneNews.Title.ToString()</h2>
+                </a>
+                <p>@oneNews.TimeAgo.ToString()</p>
+            </div>
+        }
     </div>
 </div>
