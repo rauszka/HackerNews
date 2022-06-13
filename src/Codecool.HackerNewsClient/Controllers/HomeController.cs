@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace HackerNewsClient.Controllers
 {
@@ -59,7 +60,7 @@ namespace HackerNewsClient.Controllers
             return null;
         }
 
-        public async Task<ActionResult> TopNews(int ID = 1)
+        public ActionResult TopNews(int ID = 1)
         {
             string apiUrl = $"https://api.hnpwa.com/v0/news/{ID}.json";
 
@@ -67,24 +68,45 @@ namespace HackerNewsClient.Controllers
 
             List<NewsModel> newsList = new();
 
-                    foreach (DataRow tr in table.Result.Rows)
-                    {
-                        string title = tr["title"].ToString();
-                        string author = tr["user"].ToString();
-                        string timeAgo = tr["time_ago"].ToString();
-                        string url = tr["url"].ToString();
+            foreach (DataRow tr in table.Result.Rows)
+            {
+                string title = tr["title"].ToString();
+                string author = tr["user"].ToString();
+                string timeAgo = tr["time_ago"].ToString();
+                string url = tr["url"].ToString();
 
-                        NewsModel oneNews = new NewsModel(ID, title, author, timeAgo, url);
-                        newsList.Add(oneNews);
-                    }
-
-                    ViewData["news"] = newsList;
-
-                }
-
+                NewsModel oneNews = new NewsModel(ID, title, author, timeAgo, url);
+                newsList.Add(oneNews);
             }
+
+            ViewData["news"] = newsList;
             return View();
         }
+
+        public ActionResult NewestNews(int ID = 1)
+        {
+            string apiUrl = $"https://api.hnpwa.com/v0/newest/{ID}.json";
+
+            var table = RetrieveData(apiUrl);
+
+            List<NewsModel> newsList = new();
+
+            foreach (DataRow tr in table.Result.Rows)
+            {
+                string title = tr["title"].ToString();
+                string author = tr["user"].ToString();
+                string timeAgo = tr["time_ago"].ToString();
+                string url = tr["url"].ToString();
+
+                NewsModel oneNews = new NewsModel(ID, title, author, timeAgo, url);
+                newsList.Add(oneNews);
+            }
+
+            ViewData["news"] = newsList;
+
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
