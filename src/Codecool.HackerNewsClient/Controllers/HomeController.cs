@@ -35,9 +35,8 @@ namespace HackerNewsClient.Controllers
             return View();
         }
 
-        public async Task<ActionResult> TopNews(int ID = 1)
+        public async Task<DataTable> RetrieveData(string apiUrl)
         {
-            string apiUrl = $"https://api.hnpwa.com/v0/news/{ID}.json";
 
             using (HttpClient client = new HttpClient())
             {
@@ -53,9 +52,22 @@ namespace HackerNewsClient.Controllers
                     var data = await response.Content.ReadAsStringAsync();
                     var table = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Data.DataTable>(data);
 
-                    List<NewsModel> newsList = new();
+                    return table;
+                }
+            }
 
-                    foreach (DataRow tr in table.Rows)
+            return null;
+        }
+
+        public async Task<ActionResult> TopNews(int ID = 1)
+        {
+            string apiUrl = $"https://api.hnpwa.com/v0/news/{ID}.json";
+
+            var table = RetrieveData(apiUrl);
+
+            List<NewsModel> newsList = new();
+
+                    foreach (DataRow tr in table.Result.Rows)
                     {
                         string title = tr["title"].ToString();
                         string author = tr["user"].ToString();
