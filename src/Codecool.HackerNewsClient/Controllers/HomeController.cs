@@ -62,7 +62,7 @@ namespace HackerNewsClient.Controllers
                         string timeAgo = tr["time_ago"].ToString();
                         string url = tr["url"].ToString();
 
-                        NewsModel oneNews = new NewsModel(title, author, timeAgo, url);
+                        NewsModel oneNews = new NewsModel(ID, title, author, timeAgo, url);
                         newsList.Add(oneNews);
                     }
 

@@ -5,6 +5,16 @@
 }
 
 <div class="jumbotron">
+    @{
+        string page = news.Select(oneNews => oneNews.Page.ToString()).First();
+        int next = int.Parse(page) == 10 ? int.Parse(page) : int.Parse(page) + 1;
+        int prev = int.Parse(page) == 1 ? 1 : int.Parse(page) - 1;
+    }
+
+    <div>
+        <p><a href="/home/topnews/@next">Next</a></p>
+        <p><a href="/home/topnews/@prev">Previous</a></p>
+    </div>
     <div class="row">
         @foreach (var oneNews in news)
         {
