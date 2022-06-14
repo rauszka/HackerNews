@@ -60,7 +60,7 @@ namespace HackerNewsClient.Controllers
             return null;
         }
 
-        public ActionResult TopNews(int ID = 1)
+        public ActionResult Top(int ID = 1)
         {
             string apiUrl = $"https://api.hnpwa.com/v0/news/{ID}.json";
 
@@ -75,8 +75,8 @@ namespace HackerNewsClient.Controllers
                 string timeAgo = tr["time_ago"].ToString();
                 string url = tr["url"].ToString();
 
-                APIModel oneApi = new APIModel(ID, title, author, timeAgo, url);
-                newsList.Add(oneApi);
+                APIModel news = new APIModel(ID, title, author, timeAgo, url);
+                newsList.Add(news);
             }
 
             ViewData["news"] = newsList;
@@ -98,8 +98,8 @@ namespace HackerNewsClient.Controllers
                 string timeAgo = tr["time_ago"].ToString();
                 string url = tr["url"].ToString();
 
-                APIModel oneApi = new APIModel(ID, title, author, timeAgo, url);
-                newsList.Add(oneApi);
+                APIModel news = new APIModel(ID, title, author, timeAgo, url);
+                newsList.Add(news);
             }
 
             ViewData["news"] = newsList;
@@ -107,13 +107,13 @@ namespace HackerNewsClient.Controllers
             return View();
         }
 
-        public ActionResult Job(int ID = 1)
+        public ActionResult Jobs(int ID = 1)
         {
             string apiUrl = $"https://api.hnpwa.com/v0/jobs/{ID}.json";
 
             var table = RetrieveData(apiUrl);
 
-            List<APIModel> newsList = new();
+            List<APIModel> jobList = new();
 
             foreach (DataRow tr in table.Result.Rows)
             {
@@ -122,11 +122,11 @@ namespace HackerNewsClient.Controllers
                 string timeAgo = tr["time_ago"].ToString();
                 string url = tr["url"].ToString();
 
-                APIModel oneApi = new APIModel(ID, title, author, timeAgo, url);
-                newsList.Add(oneApi);
+                APIModel job = new APIModel(ID, title, author, timeAgo, url);
+                jobList.Add(job);
             }
 
-            ViewData["news"] = newsList;
+            ViewData["jobs"] = jobList;
 
             return View();
         }

@@ -1,6 +1,6 @@
 ﻿@model APIModel
 @{
-    ViewData["Title"] = "Newest";
+    ViewData["Title"] = "Top";
     List<APIModel> news = (List<APIModel>)ViewData["news"];
     int page = news.Select(oneNews => oneNews.Page).First();
     int next = page == 10 ? page : page + 1;
@@ -8,11 +8,11 @@
 }
 
 <div class="jumbotron">
-    <h1>Newest Articles</h1>
+    <h1>Top News</h1>
 
     <div>
-        <a asp-controller="Home" asp-action="Newest" asp-route-id="@prev">Previous</a> |
-        <a asp-controller="Home" asp-action="Newest" asp-route-id="@next">Next</a>
+        <a asp-controller="Home" asp-action="Top" asp-route-id="@prev">Previous</a> |
+        <a asp-controller="Home" asp-action="Top" asp-route-id="@next">Next</a>
     </div>
 
     <div class="row">
