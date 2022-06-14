@@ -36,6 +36,20 @@ namespace HackerNewsClient.Controllers
             return View();
         }
 
+        public async Task<string> API_Top(int ID = 1)
+        {
+            string apiUrl = $"https://api.hnpwa.com/v0/news/{ID}.json";
+            var table = RetrieveData(apiUrl);
+            var result = Newtonsoft.Json.JsonConvert.SerializeObject(table.Result);
+            return result;
+        }
+
+        public ActionResult Fetch(int ID = 1)
+        {
+            ViewData["id"] = ID;
+            return View();
+        }
+
         public async Task<DataTable> RetrieveData(string apiUrl)
         {
 
