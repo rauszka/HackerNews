@@ -1,8 +1,7 @@
 # HackerNews
 
 ## Description
-It is a web application, that uses ASP.NET Core MVC framework with controllers and views. 
-The site is fetching data asynchronously from backend which is using HackerNews API.[Geometry].
+It is a web application, that uses ASP.NET Core MVC framework with controllers and views. The site is fetching data asynchronously from backend which is using HackerNews API.
 
 ## Tasks
 
